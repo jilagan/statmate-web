@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StatMate — Lesson 1: The number that hides the room</title>
+<style>
+  :root {
+    --orange: #ff8a3d;
+    --teal: #2dd4bf;
+    --bg: #fafaf9;
+    --card: #ffffff;
+    --text: #1c1917;
+    --muted: #78716c;
+    --border: #e7e5e4;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .brand {
+    font-size: 14px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 8px 0 0;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 40px 0 12px;
+  }
+  .hook {
+    font-size: 17px;
+    color: var(--text);
+  }
+  .shift-callout {
+    background: #fff7ed;
+    border-left: 4px solid var(--orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    margin: 24px 0;
+  }
+  .sim-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 32px 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .sim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    margin-top: 2px;
+  }
+  .stat-mean { color: var(--orange); }
+  .stat-median { color: var(--teal); }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255, 138, 61, 0.15);
+    color: var(--orange);
+    padding: 4px 10px;
+    border-radius: 999px;
+    align-self: center;
+  }
+  #seesaw {
+    width: 100%;
+    height: 320px;
+    display: block;
+    touch-action: none;
+    cursor: grab;
+  }
+  #seesaw:active { cursor: grabbing; }
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .btn {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text);
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .helper {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 8px;
+  }
+  .faq {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 8px 0;
+  }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .faq p {
+    margin: 10px 0 0;
+    font-size: 15px;
+    color: var(--text);
+  }
+  .progress-beat {
+    background: #f0fdfa;
+    border-left: 4px solid var(--teal);
+    padding: 16px 20px;
+    border-radius: 6px;
+    font-size: 15px;
+    margin-top: 24px;
+  }
+  .lms-stub {
+    margin-top: 48px;
+    padding: 20px;
+    background: var(--card);
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    text-align: center;
+  }
+  .lms-stub h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+  }
+  .lms-stub p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="brand">StatMate · Describing Data · Lesson 1</div>
+    <h1>The number that hides the room</h1>
+  </header>
+
+  <p class="hook">A startup has eleven employees. Ten of them — engineers, designers, support — earn between $35,000 and $95,000 a year. The eleventh is the founder, who pays himself $1.2 million.</p>
+
+  <p class="hook">A reporter asks: "What's the average salary at this company?" Someone in HR types it into a spreadsheet, hits AVERAGE, and reads back the answer: <strong>$163,636</strong>.</p>
+
+  <p class="hook">That number is correct. It is also a lie. Not because the math is wrong — it isn't. The lie is in what the number invites you to picture. You hear "average salary $163,636" and you imagine a room full of people earning around that. There is no such room. There are ten people earning much less, and one person earning vastly more, and the average is sitting in a place where literally no one is standing.</p>
+
+  <div class="shift-callout">
+    <strong>The shift:</strong> The mean is not "the typical value." It's a balance point — where a seesaw with a weight at every data point would balance. When the data is symmetric, the balance point is in the middle of the crowd. When it isn't, the balance point can land somewhere no one is standing.
+  </div>
+
+  <h2>The Seesaw</h2>
+  <p>Drag any figure left or right. Watch the orange fulcrum (the mean) move. The teal triangle is the median.</p>
+
+  <div class="sim-card">
+    <div class="sim-header">
+      <div class="stat">
+        <span class="stat-label">Mean</span>
+        <span class="stat-value stat-mean" id="mean-value">$163k</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Median</span>
+        <span class="stat-value stat-median" id="median-value">$60k</span>
+      </div>
+      <span class="badge" id="badge" style="display: none;">Mean is above almost everyone</span>
+    </div>
+
+    <canvas id="seesaw"></canvas>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="btn-startup">Startup scenario</button>
+      <button class="btn" id="btn-balanced">Balanced row</button>
+    </div>
+    <div class="helper">Drag any figure left or right to change its salary. The fulcrum follows the mean.</div>
+  </div>
+
+  <h2>FAQs</h2>
+
+  <details class="faq">
+    <summary>If the mean is so misleading, why use it at all?</summary>
+    <p>Because for symmetric data — heights, test scores, blood pressure — the mean and the median agree, and the mean has nicer mathematical properties (it's what the rest of statistics is built on). The mean is misleading specifically when the data is skewed or has outliers. The fix is not to abandon the mean; it's to know when it's lying to you and report a median alongside it.</p>
+  </details>
+
+  <details class="faq">
+    <summary>Is the mean ever the right thing to report for skewed data?</summary>
+    <p>Yes — when you actually care about the total. If you want to know how much money a company spends on salaries in a year, the mean times the headcount gives you the right number. If you want to know what a typical employee earns, the median is honest and the mean is not. The choice depends on the question, not the data.</p>
+  </details>
+
+  <details class="faq">
+    <summary>Why don't news headlines just always use the median?</summary>
+    <p>Because "average" is a more familiar word and "median" feels technical. Most readers don't know the difference. This is why income statistics from serious sources (the Census, the Fed) almost always report median household income — they know which number is honest about what real households look like.</p>
+  </details>
+
+  <h2>What you now see that you didn't 20 minutes ago</h2>
+  <div class="progress-beat">
+    Twenty minutes ago, "average salary" probably meant "what most people earn." Right now, after watching a single founder drag the fulcrum past every employee in the room, you are holding a different picture: the mean is a balance point, and balance points live wherever the weights say they live, including places where no one is standing. The next time you read a headline that says "average household income is $X," you'll know to ask the next question: where is the median, and how far apart are they?
+  </div>
+
+  <div class="lms-stub">
+    <h3>📜 Quiz + Certificate (Coming soon)</h3>
+    <p>Free audit ends here. Certificate track unlocks the quiz, the assignment, and the certificate of participation when you complete the course. Powered by Ateneo BUILD.</p>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// Seesaw Simulator — vanilla JS port of SwiftUI SeesawView
+// ============================================================
+
+const canvas = document.getElementById('seesaw');
+const ctx = canvas.getContext('2d');
+const meanValueEl = document.getElementById('mean-value');
+const medianValueEl = document.getElementById('median-value');
+const badgeEl = document.getElementById('badge');
+
+// Salary range mapping. Position 0..1 → $20k..$1.2M
+const SALARY_MIN = 20_000;
+const SALARY_MAX = 1_200_000;
+
+const STARTUP_SCENARIO = [0.04, 0.05, 0.05, 0.06, 0.06, 0.07, 0.07, 0.08, 0.08, 0.09, 0.99];
+const BALANCED_SCENARIO = Array.from({length: 11}, (_, i) => 0.10 + i * 0.08);
+
+let figures = STARTUP_SCENARIO.map(p => ({ position: p }));
+let dragIdx = null;
+let dpr = window.devicePixelRatio || 1;
+
+function setupCanvas() {
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+}
+
+function salaryLabel(position) {
+  const dollars = SALARY_MIN + position * (SALARY_MAX - SALARY_MIN);
+  if (dollars >= 1_000_000) return `$${(dollars / 1_000_000).toFixed(2)}M`;
+  return `$${Math.round(dollars / 1000)}k`;
+}
+
+function computeMean() {
+  return figures.reduce((sum, f) => sum + f.position, 0) / figures.length;
+}
+
+function computeMedian() {
+  const sorted = figures.map(f => f.position).slice().sort((a,b) => a-b);
+  const n = sorted.length;
+  if (n % 2 === 1) return sorted[(n-1)/2];
+  return (sorted[n/2 - 1] + sorted[n/2]) / 2;
+}
+
+function meanIsAboveMost(mean) {
+  return figures.filter(f => f.position < mean).length >= figures.length - 2;
+}
+
+function draw() {
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const h = rect.height;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const leftPad = 32;
+  const rightPad = 32;
+  const plankWidth = w - leftPad - rightPad;
+  const plankY = h * 0.55;
+  const dotR = 14;
+
+  // Axis labels
+  ctx.font = '11px -apple-system, system-ui, sans-serif';
+  ctx.fillStyle = '#a8a29e';
+  ctx.textAlign = 'center';
+  ctx.fillText('$20k', leftPad, plankY - 32);
+  ctx.fillText('$600k', leftPad + plankWidth / 2, plankY - 32);
+  ctx.fillText('$1.2M', leftPad + plankWidth, plankY - 32);
+
+  // Plank
+  ctx.fillStyle = '#a8a29e';
+  ctx.fillRect(leftPad, plankY - 2, plankWidth, 4);
+
+  // Tick marks
+  ctx.fillStyle = '#d6d3d1';
+  for (let i = 0; i <= 10; i++) {
+    const x = leftPad + (i / 10) * plankWidth;
+    ctx.fillRect(x - 0.5, plankY + 4, 1, 8);
+  }
+
+  // Compute current mean & median
+  const mean = computeMean();
+  const median = computeMedian();
+  const meanX = leftPad + mean * plankWidth;
+  const medianX = leftPad + median * plankWidth;
+
+  // Median triangle (small, teal, below plank)
+  ctx.fillStyle = '#2dd4bf';
+  ctx.beginPath();
+  ctx.moveTo(medianX, plankY + 22);
+  ctx.lineTo(medianX - 7, plankY + 36);
+  ctx.lineTo(medianX + 7, plankY + 36);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#0d9488';
+  ctx.font = '10px -apple-system, system-ui, sans-serif';
+  ctx.fillText('median', medianX, plankY + 50);
+
+  // Mean fulcrum (orange triangle, larger, below plank)
+  ctx.fillStyle = '#ff8a3d';
+  ctx.beginPath();
+  ctx.moveTo(meanX, plankY + 60);
+  ctx.lineTo(meanX - 11, plankY + 78);
+  ctx.lineTo(meanX + 11, plankY + 78);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillStyle = '#c2410c';
+  ctx.font = 'bold 11px -apple-system, system-ui, sans-serif';
+  ctx.fillText('mean = balance point', meanX, plankY + 95);
+
+  // Figures (dots on top of plank)
+  for (let i = 0; i < figures.length; i++) {
+    const x = leftPad + figures[i].position * plankWidth;
+    const y = plankY - dotR - 2;
+    // Outer white ring
+    ctx.beginPath();
+    ctx.arc(x, y, dotR + 2, 0, Math.PI * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+    // Inner blue circle
+    ctx.beginPath();
+    ctx.arc(x, y, dotR, 0, Math.PI * 2);
+    ctx.fillStyle = i === dragIdx ? '#1d4ed8' : '#3b82f6';
+    ctx.fill();
+  }
+
+  // Update header stats
+  meanValueEl.textContent = salaryLabel(mean);
+  medianValueEl.textContent = salaryLabel(median);
+  badgeEl.style.display = meanIsAboveMost(mean) ? 'inline-block' : 'none';
+}
+
+function getFigureAt(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  const w = rect.width;
+  const h = rect.height;
+  const leftPad = 32;
+  const plankWidth = w - 32 - 32;
+  const plankY = h * 0.55;
+  const dotR = 14;
+  const dotY = plankY - dotR - 2;
+
+  for (let i = 0; i < figures.length; i++) {
+    const fx = leftPad + figures[i].position * plankWidth;
+    const dx = x - fx;
+    const dy = y - dotY;
+    if (dx*dx + dy*dy <= (dotR + 6) * (dotR + 6)) {
+      return i;
+    }
+  }
+  return null;
+}
+
+function moveFigureFrom(clientX) {
+  if (dragIdx === null) return;
+  const rect = canvas.getBoundingClientRect();
+  const leftPad = 32;
+  const plankWidth = rect.width - 64;
+  const newPos = (clientX - rect.left - leftPad) / plankWidth;
+  figures[dragIdx].position = Math.max(0.02, Math.min(0.98, newPos));
+  draw();
+}
+
+// Pointer events handle mouse + touch in one path
+canvas.addEventListener('pointerdown', (e) => {
+  const idx = getFigureAt(e.clientX, e.clientY);
+  if (idx !== null) {
+    dragIdx = idx;
+    canvas.setPointerCapture(e.pointerId);
+    draw();
+  }
+});
+
+canvas.addEventListener('pointermove', (e) => {
+  if (dragIdx !== null) moveFigureFrom(e.clientX);
+});
+
+canvas.addEventListener('pointerup', (e) => {
+  dragIdx = null;
+  draw();
+});
+
+canvas.addEventListener('pointercancel', () => {
+  dragIdx = null;
+  draw();
+});
+
+document.getElementById('btn-startup').addEventListener('click', () => {
+  figures = STARTUP_SCENARIO.map(p => ({ position: p }));
+  draw();
+});
+
+document.getElementById('btn-balanced').addEventListener('click', () => {
+  figures = BALANCED_SCENARIO.map(p => ({ position: p }));
+  draw();
+});
+
+window.addEventListener('resize', () => {
+  setupCanvas();
+  draw();
+});
+
+// Initial render
+setupCanvas();
+draw();
+</script>
+
+</body>
+</html>
