@@ -110,7 +110,7 @@
   }
   #seesaw {
     width: 100%;
-    height: 320px;
+    height: 400px;
     display: block;
     touch-action: none;
     cursor: grab;
@@ -170,6 +170,8 @@
     font-size: 15px;
     margin-top: 24px;
   }
+  .progress-beat p { margin: 0 0 12px; }
+  .progress-beat p:last-child { margin-bottom: 0; }
   .lms-stub {
     margin-top: 48px;
     padding: 20px;
@@ -197,14 +199,16 @@
     <h1>The number that hides the room</h1>
   </header>
 
-  <p class="hook">A startup has eleven employees. Ten of them — engineers, designers, support — earn between $35,000 and $95,000 a year. The eleventh is the founder, who pays himself $1.2 million.</p>
+  <p class="hook">Eleven people work at a small startup. Ten of them make about $60,000 a year. The eleventh is the founder, who pays herself $1.2 million.</p>
 
-  <p class="hook">A reporter asks: "What's the average salary at this company?" Someone in HR types it into a spreadsheet, hits AVERAGE, and reads back the answer: <strong>$163,636</strong>.</p>
+  <p class="hook">The HR page says: <em>Average salary at this company: $163,636.</em></p>
 
-  <p class="hook">That number is correct. It is also a lie. Not because the math is wrong — it isn't. The lie is in what the number invites you to picture. You hear "average salary $163,636" and you imagine a room full of people earning around that. There is no such room. There are ten people earning much less, and one person earning vastly more, and the average is sitting in a place where literally no one is standing.</p>
+  <p class="hook">That number is not wrong. Nobody lied. The arithmetic is correct. And yet if you took that number to any of the ten employees and said "this is what your company pays people," they would laugh at you. The number describes a room that does not exist. There is no one in the building making $163,636. The closest anyone comes is about $100,000 below it.</p>
+
+  <p class="hook">This is the kind of number you've been reading your whole life without anyone warning you about it.</p>
 
   <div class="shift-callout">
-    <strong>The shift:</strong> The mean is not "the typical value." It's a balance point — where a seesaw with a weight at every data point would balance. When the data is symmetric, the balance point is in the middle of the crowd. When it isn't, the balance point can land somewhere no one is standing.
+    <strong>The shift:</strong> Right now, when you hear an average, you probably picture <em>the typical person</em> — someone in the middle, someone who represents the group. By the end of this lesson you should be holding a different picture: an average is a single point that gets dragged around by whoever is in the room with it. Sometimes the people in the room are bunched up around it and the average is honest. Sometimes one person at the edge of the room drags it five steps away from where everyone actually stands. <strong>The average doesn't lie; it just doesn't know how to tell you about the room.</strong> Your new job, every time you hear an average, is to ask one question: <em>what does the room look like?</em>
   </div>
 
   <h2>The Seesaw</h2>
@@ -214,7 +218,7 @@
     <div class="sim-header">
       <div class="stat">
         <span class="stat-label">Mean</span>
-        <span class="stat-value stat-mean" id="mean-value">$163k</span>
+        <span class="stat-value stat-mean" id="mean-value">$164k</span>
       </div>
       <div class="stat">
         <span class="stat-label">Median</span>
@@ -227,7 +231,7 @@
 
     <div class="controls">
       <button class="btn btn-primary" id="btn-startup">Startup scenario</button>
-      <button class="btn" id="btn-balanced">Balanced row</button>
+      <button class="btn" id="btn-bunch">Reset to a bunch</button>
     </div>
     <div class="helper">Drag any figure left or right to change its salary. The fulcrum follows the mean.</div>
   </div>
@@ -235,23 +239,29 @@
   <h2>FAQs</h2>
 
   <details class="faq">
-    <summary>If the mean is so misleading, why use it at all?</summary>
-    <p>Because for symmetric data — heights, test scores, blood pressure — the mean and the median agree, and the mean has nicer mathematical properties (it's what the rest of statistics is built on). The mean is misleading specifically when the data is skewed or has outliers. The fix is not to abandon the mean; it's to know when it's lying to you and report a median alongside it.</p>
+    <summary>Is the average wrong, then? Should I stop using it?</summary>
+    <p>No. The average is a real number with a real meaning — it's the balance point of the data. The problem isn't the average; it's the assumption people layer on top of it that "average means typical." Use averages, but ask what shape they came from. By the end of this unit you'll have two or three more numbers in your toolkit (the median, the spread) that fill in what the average leaves out.</p>
   </details>
 
   <details class="faq">
-    <summary>Is the mean ever the right thing to report for skewed data?</summary>
-    <p>Yes — when you actually care about the total. If you want to know how much money a company spends on salaries in a year, the mean times the headcount gives you the right number. If you want to know what a typical employee earns, the median is honest and the mean is not. The choice depends on the question, not the data.</p>
+    <summary>What's the difference between an average and a mean?</summary>
+    <p>They're the same thing. "Average" is the everyday word; "mean" is the textbook word. There are technically other kinds of averages (the median is sometimes called an average, and so is the mode), but when somebody says "the average" without specifying, they almost always mean the mean — the seesaw balance point.</p>
   </details>
 
   <details class="faq">
-    <summary>Why don't news headlines just always use the median?</summary>
-    <p>Because "average" is a more familiar word and "median" feels technical. Most readers don't know the difference. This is why income statistics from serious sources (the Census, the Fed) almost always report median household income — they know which number is honest about what real households look like.</p>
+    <summary>Why does one person drag the mean so much?</summary>
+    <p>Because the mean weighs <em>distance</em>, not <em>count</em>. The founder isn't just one person away from the bunch — she's more than a thousand $1,000 steps away from it. To balance her, the balance point has to slide far enough right that the ten employees' distances on the left add up to her one distance on the right. That happens at $163,636, roughly $100,000 from each employee. We'll come back to this in lesson 3 when we talk about <em>spread</em> — the formal version of "how far from the bunch are people, on average?"</p>
+  </details>
+
+  <details class="faq">
+    <summary>My friend says the median is better. Is the median better?</summary>
+    <p>Sometimes much better, sometimes the same, sometimes worse. Lesson 2 is entirely about when each one tells the truth. The short answer: the median ignores how far the founder is — she's just "one person to the right" — so it doesn't get dragged. That's a feature in some situations and a bug in others.</p>
   </details>
 
   <h2>What you now see that you didn't 20 minutes ago</h2>
   <div class="progress-beat">
-    Twenty minutes ago, "average salary" probably meant "what most people earn." Right now, after watching a single founder drag the fulcrum past every employee in the room, you are holding a different picture: the mean is a balance point, and balance points live wherever the weights say they live, including places where no one is standing. The next time you read a headline that says "average household income is $X," you'll know to ask the next question: where is the median, and how far apart are they?
+    <p>Twenty minutes ago, "average" probably meant "the typical one." Right now, after dragging eleven figures around a number line and watching one of them yank the balance point a hundred thousand dollars to the right, you are holding a different picture: an average is a <em>balance point</em>, and a balance point moves when weights move, even when most of the people don't.</p>
+    <p>You can also now do something you probably could not do before: hear a number like "average household income is $X" and feel an honest hesitation. <em>What does that room look like? Is everyone bunched around X, or is X being dragged by a few people way out at the edge?</em> You are not doing math when you ask that. You are doing statistics. The whole rest of this unit is about giving you the other tools you need to actually answer it — starting in lesson 2, with a number that doesn't get dragged at all.</p>
   </div>
 
   <div class="lms-stub">
@@ -275,8 +285,17 @@ const badgeEl = document.getElementById('badge');
 const SALARY_MIN = 20_000;
 const SALARY_MAX = 1_200_000;
 
-const STARTUP_SCENARIO = [0.04, 0.05, 0.05, 0.06, 0.06, 0.07, 0.07, 0.08, 0.08, 0.09, 0.99];
-const BALANCED_SCENARIO = Array.from({length: 11}, (_, i) => 0.10 + i * 0.08);
+function salaryToPosition(s) {
+  return (s - SALARY_MIN) / (SALARY_MAX - SALARY_MIN);
+}
+
+// Lesson 1 startup: ten employees at about $60k (sum $600k) and the founder at $1.2M.
+// Mean $163,636.36, median $60,000.
+const STARTUP_SALARIES = [56000, 57000, 58000, 59000, 60000, 60000, 61000, 62000, 63000, 64000, 1200000];
+const STARTUP_SCENARIO = STARTUP_SALARIES.map(salaryToPosition);
+// "Reset to a bunch": eleven salaries from $55k to $65k in $1k steps.
+const BUNCH_SALARIES = Array.from({length: 11}, (_, i) => 55000 + i * 1000);
+const BUNCH_SCENARIO = BUNCH_SALARIES.map(salaryToPosition);
 
 let figures = STARTUP_SCENARIO.map(p => ({ position: p }));
 let dragIdx = null;
@@ -310,6 +329,27 @@ function meanIsAboveMost(mean) {
   return figures.filter(f => f.position < mean).length >= figures.length - 2;
 }
 
+// Figures whose x positions are within one dot diameter of a column's first figure
+// are stacked into a vertical column, so a tight bunch stays visible and draggable.
+const STACK_STEP = 1.3; // vertical step between stacked figures, in dot radii
+function layoutFigures(leftPad, plankWidth, plankY, dotR) {
+  const order = figures.map((_, i) => i).sort((a, b) => figures[a].position - figures[b].position);
+  const out = new Array(figures.length);
+  let columnX = -Infinity;
+  let level = 0;
+  for (const i of order) {
+    const x = leftPad + figures[i].position * plankWidth;
+    if (x - columnX < dotR * 2) {
+      level += 1;
+    } else {
+      columnX = x;
+      level = 0;
+    }
+    out[i] = { x: x, y: plankY - dotR - 2 - level * dotR * STACK_STEP, level: level };
+  }
+  return out;
+}
+
 function draw() {
   const rect = canvas.getBoundingClientRect();
   const w = rect.width;
@@ -320,16 +360,16 @@ function draw() {
   const leftPad = 32;
   const rightPad = 32;
   const plankWidth = w - leftPad - rightPad;
-  const plankY = h * 0.55;
+  const plankY = h - 110;
   const dotR = 14;
 
-  // Axis labels
+  // Axis labels (at the top, clear of stacked figures)
   ctx.font = '11px -apple-system, system-ui, sans-serif';
   ctx.fillStyle = '#a8a29e';
   ctx.textAlign = 'center';
-  ctx.fillText('$20k', leftPad, plankY - 32);
-  ctx.fillText('$600k', leftPad + plankWidth / 2, plankY - 32);
-  ctx.fillText('$1.2M', leftPad + plankWidth, plankY - 32);
+  ctx.fillText(salaryLabel(0), leftPad, 14);
+  ctx.fillText(salaryLabel(0.5), leftPad + plankWidth / 2, 14);
+  ctx.fillText(salaryLabel(1), leftPad + plankWidth, 14);
 
   // Plank
   ctx.fillStyle = '#a8a29e';
@@ -372,10 +412,12 @@ function draw() {
   ctx.font = 'bold 11px -apple-system, system-ui, sans-serif';
   ctx.fillText('mean = balance point', meanX, plankY + 95);
 
-  // Figures (dots on top of plank)
-  for (let i = 0; i < figures.length; i++) {
-    const x = leftPad + figures[i].position * plankWidth;
-    const y = plankY - dotR - 2;
+  // Figures (dots on top of plank, stacked when they overlap; lower levels first)
+  const layout = layoutFigures(leftPad, plankWidth, plankY, dotR);
+  const drawOrder = figures.map((_, i) => i).sort((a, b) => layout[a].level - layout[b].level);
+  for (const i of drawOrder) {
+    const x = layout[i].x;
+    const y = layout[i].y;
     // Outer white ring
     ctx.beginPath();
     ctx.arc(x, y, dotR + 2, 0, Math.PI * 2);
@@ -402,14 +444,15 @@ function getFigureAt(clientX, clientY) {
   const h = rect.height;
   const leftPad = 32;
   const plankWidth = w - 32 - 32;
-  const plankY = h * 0.55;
+  const plankY = h - 110;
   const dotR = 14;
-  const dotY = plankY - dotR - 2;
 
-  for (let i = 0; i < figures.length; i++) {
-    const fx = leftPad + figures[i].position * plankWidth;
-    const dx = x - fx;
-    const dy = y - dotY;
+  // Same layout as draw(); check the topmost (last drawn) figures first.
+  const layout = layoutFigures(leftPad, plankWidth, plankY, dotR);
+  const hitOrder = figures.map((_, i) => i).sort((a, b) => layout[b].level - layout[a].level);
+  for (const i of hitOrder) {
+    const dx = x - layout[i].x;
+    const dy = y - layout[i].y;
     if (dx*dx + dy*dy <= (dotR + 6) * (dotR + 6)) {
       return i;
     }
@@ -423,7 +466,7 @@ function moveFigureFrom(clientX) {
   const leftPad = 32;
   const plankWidth = rect.width - 64;
   const newPos = (clientX - rect.left - leftPad) / plankWidth;
-  figures[dragIdx].position = Math.max(0.02, Math.min(0.98, newPos));
+  figures[dragIdx].position = Math.max(0, Math.min(1, newPos));
   draw();
 }
 
@@ -456,8 +499,8 @@ document.getElementById('btn-startup').addEventListener('click', () => {
   draw();
 });
 
-document.getElementById('btn-balanced').addEventListener('click', () => {
-  figures = BALANCED_SCENARIO.map(p => ({ position: p }));
+document.getElementById('btn-bunch').addEventListener('click', () => {
+  figures = BUNCH_SCENARIO.map(p => ({ position: p }));
   draw();
 });
 
